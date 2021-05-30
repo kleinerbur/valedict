@@ -1,6 +1,5 @@
 from tools  import *
 
-
 import winsound
 import atexit
 import questionary
@@ -15,7 +14,7 @@ os.system('mode con: cols=100 lines=25')
 
 def exit_handler():
     clear()
-    winsound.PlaySound(SOURCE_DIR + "valedict_exit.wav", winsound.SND_FILENAME)
+    winsound.PlaySound(ASSETS_DIR + "valedict_exit.wav", winsound.SND_FILENAME)
 
 atexit.register(exit_handler)
 
@@ -23,7 +22,7 @@ atexit.register(exit_handler)
 
 # MAIN
 
-winsound.PlaySound(SOURCE_DIR + "valedict_chime.wav", winsound.SND_ASYNC)
+winsound.PlaySound(ASSETS_DIR + "valedict_chime.wav", winsound.SND_ASYNC)
 
 courses = []
 load_data(courses)
@@ -114,7 +113,7 @@ while(True):
                     ).ask()
                     if confirmed:
                         courses.append(Course(name, code))
-                        with open(SOURCE_DIR + "valedict_data.json", "w") as datafile:
+                        with open(PARENT_DIR + "valedict_data.json", "w") as datafile:
                             datafile.seek(0)
                             print(json.dumps(courses, default=lambda x: x.__dict__, indent=4), file=datafile)
                         print(color("Added course {} - {}.".format(code, name), fore="green"))
@@ -185,13 +184,13 @@ while(True):
                     ).ask()
 
                     if confirmed and class_type == "lecture":
-                        courses[courses.index(course)].set_lecture(days_lower.index(new_day) + 1, new_time)                
-                        with open(SOURCE_DIR + "valedict_data.json", "w") as datafile:
+                        courses[courses.index(course)].set_lecture(days_lower.index(new_day.strip()) + 1, new_time)                
+                        with open(PARENT_DIR + "valedict_data.json", "w") as datafile:
                             datafile.seek(0)
                             print(json.dumps(courses, default=lambda x: x.__dict__, indent=4), file=datafile)
                     elif confirmed and class_type == "seminar":
-                        courses[courses.index(course)].set_seminar(days_lower.index(new_day) + 1, new_time)
-                        with open(SOURCE_DIR + "valedict_data.json", "w") as datafile:
+                        courses[courses.index(course)].set_seminar(days_lower.index(new_day.strip()) + 1, new_time)
+                        with open(PARENT_DIR + "valedict_data.json", "w") as datafile:
                             datafile.seek(0)
                             print(json.dumps(courses, default=lambda x: x.__dict__, indent=4), file=datafile)
                     else:
@@ -200,8 +199,8 @@ while(True):
 
     elif choice == "Print schedule":
         
-        lectures = [(course.name, course.lecture.day, course.lecture.start_time) for course in courses if hasattr(course, "lecture")]
-        seminars = [(course.name, course.seminar.day, course.seminar.start_time) for course in courses if hasattr(course, "seminar")]
+        lectures = [(course.name + " [L]", course.lecture.day, course.lecture.start_time) for course in courses if hasattr(course, "lecture")]
+        seminars = [(course.name + " [S]", course.seminar.day, course.seminar.start_time) for course in courses if hasattr(course, "seminar")]
         classes = (lectures + seminars)
         classes = sorted(classes, key=lambda x:x[2])
         schedule = [""]
@@ -227,7 +226,7 @@ while(True):
 
     elif choice == "Open JSON in notepad":
         clear()
-        webbrowser.open(SOURCE_DIR + "valedict_data.json")
+        webbrowser.open(PARENT_DIR + "valedict_data.json")
 
 
     elif choice == "Run on system startup":

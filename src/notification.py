@@ -1,15 +1,12 @@
 import winrt.windows.ui.notifications as notifications
 import winrt.windows.data.xml.dom as dom
 import pathlib
-import os, re
 
 currentdir = pathlib.Path(__file__).parent.absolute()
 
 class NotificationSender:
     def __init__(self):
         self.app = '{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe'
-        # self.app = '{F1B32785-6FBA-4FCF-9D55-7B8E7F157091}\\Microsoft\\Teams\\Current\\Teams.exe'
-        # self.app = '{3EB685DB-65F9-4CF6-A03A-E3EF65729F3D}\\Microsoft\\Windows\\Start Menu\\Programs\\Microsoft Teams'
         self.nManager = notifications.ToastNotificationManager
         self.notifier = self.nManager.create_toast_notifier(self.app)
     

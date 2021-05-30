@@ -1,13 +1,18 @@
-from pyfiglet import Figlet
-from colr     import color
-from shutil   import copyfile
 from course   import *
+from pyfiglet     import Figlet
+from colr         import color
+from shutil       import copyfile, move
 import json
 import sys, os
 import winshell
 import questionary
 
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__)) + "\\"
+print(SOURCE_DIR)
+PARENT_DIR = SOURCE_DIR.removesuffix("src\\")
+print(PARENT_DIR)
+ASSETS_DIR = PARENT_DIR + "assets\\"
+
 profile = winshell.folder("profile")
 startmenu = profile + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\"
 startup = startmenu + "Programs\\Startup\\"
@@ -30,7 +35,6 @@ days       = ["[ MONDAY ]", "[ TUESDAY ]", "[ WEDNESDAY ]", "[ THURSDAY ]", "[ F
 days_lower = ["monday", "tuesday", "wednesday", "thursday", "friday"]
 days_short = ["mon.", "tue.", "wed.", "thu.", "fri."]
 
-
 clear = lambda: os.system('cls')
 
 def hh_mm(time):
@@ -49,7 +53,7 @@ def resize_window(width, height):
         os.system('mode con: cols={} lines={}'.format(width, height))
 
 def load_data(courses):
-    with open(SOURCE_DIR + "valedict_data.json") as datafile:
+    with open(PARENT_DIR + "valedict_data.json") as datafile:
         try:
             data = json.load(datafile)
             for x in data:
@@ -94,22 +98,31 @@ def main_menu(pid):
 
     return choice
 
-def link_launcher(create_desktop_shortcut):
+def link_launcher(create_desktop_shortcut = False):
     with winshell.shortcut("Valedict") as link:
         link.path = SOURCE_DIR + "valedict_launcher.py"
         link.description = "Valedict Launcher"
-        link.icon_location = (SOURCE_DIR + "valedict.ico", 0)
-    copyfile(SOURCE_DIR + "Valedict.lnk",
-            startmenu  + "Valedict.lnk")    
+        link.icon_location = (ASSETS_DIR + "valedict.ico", 0)
+    move(SOURCE_DIR + "Valedict.lnk",
+         PARENT_DIR + "Valedict.lnk")
+    copyfile(PARENT_DIR + "Valedict.lnk",
+             startmenu  + "Valedict.lnk")    
     if (create_desktop_shortcut):
-        copyfile(SOURCE_DIR + "Valedict.lnk",
+        copyfile(PARENT_DIR + "Valedict.lnk",
                  profile    + "\\Desktop\\Valedict.lnk") 
 
-def link_process():
+def link_process(enabled_on_startup = False):
     with winshell.shortcut("valedict_process") as link:
             link.path = pyw
             link.description = "valedict_process"
-            link.arguments = SOURCE_DIR + "valedict.py"
-            link.icon_location = (SOURCE_DIR + "valedict.ico", 0)
-    copyfile(SOURCE_DIR + "valedict_process.lnk",
-            startup    + "valedict_process.lnk")
+            link.arguments = PARENT_DIR + "valedict.py"
+            link.icon_location = (ASSETS_DIR + "valedict.ico", 0)
+    move(SOURCE_DIR + "valedict_process.lnk",
+         PARENT_DIR + "valedict_process.lnk")
+    if enabled_on_startup:
+        copyfile(PARENT_DIR + "valedict_process.lnk",
+                 startup    + "valedict_process.lnk")
+
+
+if not os.path.exists(PARENT_DIR + "valedict_data.json"):
+    open(PARENT_DIR + "valedict_data.json", "w")

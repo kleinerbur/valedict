@@ -1,11 +1,11 @@
 from datetime          import datetime
-from notification      import NotificationSender
+from notification  import NotificationSender
+from tools         import *
 
 import atexit
 import json
 import time
 
-from tools import *
 
 def exit_handler():
     vdict.save_data()
