@@ -2,7 +2,7 @@ import winrt.windows.ui.notifications as notifications
 import winrt.windows.data.xml.dom as dom
 import pathlib
 
-currentdir = pathlib.Path(__file__).parent.absolute()
+from tools import ASSETS_DIR
 
 class NotificationSender:
     def __init__(self):
@@ -17,7 +17,7 @@ class NotificationSender:
                 <binding template='ToastGeneric'>
                     <text>Valedict</text>
                     <text>Now running in the background</text>
-                    <image placement="appLogoOverride" src="file:///{}/valedictlogo.png"/>
+                    <image placement="appLogoOverride" src="file:///{}valedictlogo.png"/>
                 </binding>
                 </visual>
                 <actions>
@@ -29,7 +29,7 @@ class NotificationSender:
                     arguments="action=dismiss"/>
                 </actions>        
             </toast>
-            """.format(currentdir)
+            """.format(ASSETS_DIR)
 
         xDoc = dom.XmlDocument()
         xDoc.load_xml(text)
@@ -43,7 +43,7 @@ class NotificationSender:
                 <binding template='ToastGeneric'>
                     <text>{0}</text>
                     <text>Starting at {1}</text>
-                    <image placement="appLogoOverride" src="file:///{2}/valedictlogo.png"/>
+                    <image placement="appLogoOverride" src="file:///{2}valedictlogo.png"/>
                 </binding>
                 </visual>
                 <actions>
@@ -55,7 +55,7 @@ class NotificationSender:
                     arguments="action=dismiss"/>
                 </actions>        
             </toast>
-            """.format(name, time, currentdir)
+            """.format(name, time, ASSETS_DIR)
 
         xDoc = dom.XmlDocument()
         xDoc.load_xml(text)
@@ -69,7 +69,7 @@ class NotificationSender:
                 <binding template='ToastGeneric'>
                     <text>Valedict</text>
                     <text>Stopping...</text>
-                    <image placement="appLogoOverride" src="file:///{}/valedictlogo.png"/>
+                    <image placement="appLogoOverride" src="file:///{}valedictlogo.png"/>
                 </binding>
                 </visual>
                 <actions>
@@ -81,7 +81,7 @@ class NotificationSender:
                     arguments="action=dismiss"/>
                 </actions>        
             </toast>
-            """.format(currentdir)
+            """.format(ASSETS_DIR)
 
         xDoc = dom.XmlDocument()
         xDoc.load_xml(text)

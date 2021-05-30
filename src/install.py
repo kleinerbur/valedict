@@ -23,6 +23,6 @@ print("All dependencies have been installed successfully.")
 print("Creating shortcuts...")
 link_launcher(True)
 link_process()
-print("Done.")
+print("\nDone.")
 
 input()
