@@ -44,6 +44,4 @@ class Class:
         self.start_time = h * 60 + m
     
     def check_time(self, time):
-        print(datetime.today().weekday() + 1, self.day)
-        print(time, self.start_time - 10)
         return datetime.today().weekday() + 1 == self.day and self.start_time - 10 == time

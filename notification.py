@@ -13,6 +13,32 @@ class NotificationSender:
         self.nManager = notifications.ToastNotificationManager
         self.notifier = self.nManager.create_toast_notifier(self.app)
     
+    def welcome(self):
+        text = """
+            <toast>
+                <visual>
+                <binding template='ToastGeneric'>
+                    <text>Valedict</text>
+                    <text>Now running in the background</text>
+                    <image placement="appLogoOverride" src="file:///{}/valedictlogo.png"/>
+                </binding>
+                </visual>
+                <actions>
+                <action
+                    content="Delete"
+                    arguments="action=launchApplication"/>
+                <action
+                    content="Dismiss"
+                    arguments="action=dismiss"/>
+                </actions>        
+            </toast>
+            """.format(currentdir)
+
+        xDoc = dom.XmlDocument()
+        xDoc.load_xml(text)
+
+        self.notifier.show(notifications.ToastNotification(xDoc))
+
     def send(self, name, time):
         text = """
             <toast>
@@ -38,4 +64,29 @@ class NotificationSender:
         xDoc.load_xml(text)
 
         self.notifier.show(notifications.ToastNotification(xDoc))
-        
+    
+    def goodbye(self):
+        text = """
+            <toast>
+                <visual>
+                <binding template='ToastGeneric'>
+                    <text>Valedict</text>
+                    <text>Stopping...</text>
+                    <image placement="appLogoOverride" src="file:///{}/valedictlogo.png"/>
+                </binding>
+                </visual>
+                <actions>
+                <action
+                    content="Delete"
+                    arguments="action=launchApplication"/>
+                <action
+                    content="Dismiss"
+                    arguments="action=dismiss"/>
+                </actions>        
+            </toast>
+            """.format(currentdir)
+
+        xDoc = dom.XmlDocument()
+        xDoc.load_xml(text)
+
+        self.notifier.show(notifications.ToastNotification(xDoc))
