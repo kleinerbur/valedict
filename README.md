@@ -1,2 +1,2 @@
 # valedict
-Scheduling app that notifies the user of classes through Toast notifications
+Class scheduling app that notifies the user of starting lectures through Toast notifications
