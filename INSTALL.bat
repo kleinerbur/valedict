@@ -1,3 +1,4 @@
 cd src
-install.py
+install_dependencies.py
+create_links.py
 cd ..
