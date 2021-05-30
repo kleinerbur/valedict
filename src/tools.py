@@ -61,13 +61,13 @@ def print_logo(padding = 0):
         print(color("{:^100s}".format(line), fore="009050"))
 
 def resize_window(width, height):
-    if width is int and height is int:
-        os.system('mode con: cols={} lines={}'.format(width, height))
+    os.system('mode con: cols={} lines={}'.format(width, height))
 
 def save_data(courses):
     with open(PARENT_DIR + "valedict_data.json", "w", encoding='utf-8') as datafile:
         datafile.seek(0)
         json.dump(courses, datafile, default=lambda x: x.__dict__, indent=4, ensure_ascii=False, )
+    courses.sort(key=lambda x: x.name)
 
 def load_data(courses):
     with open(PARENT_DIR + "valedict_data.json", encoding='utf-8') as datafile:
@@ -81,6 +81,7 @@ def load_data(courses):
                 if hasattr(c, "lecture"):
                     c.set_lecture(c.lecture["day"], hh_mm(c.lecture["start_time"]))
                 courses.append(c)
+            courses.sort(key=lambda x: x.name)
         except(json.JSONDecodeError):
             courses = []
 

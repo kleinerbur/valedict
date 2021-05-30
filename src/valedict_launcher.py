@@ -72,7 +72,7 @@ while(True):
             for course in courses:
                 courseNames.append(" {:>43} | {}".format(course.code, course.name))
 
-            resize_window(100, len(courseNames)*2 + 10)
+            resize_window(100, len(courseNames) + 20)
             print_logo()
 
             courseName = questionary.select(
@@ -210,8 +210,8 @@ while(True):
 
     elif choice == "Print schedule":
         
-        lectures = [(course.name + " [L]", course.lecture.day, course.lecture.start_time) for course in courses if hasattr(course, "lecture")]
-        seminars = [(course.name + " [S]", course.seminar.day, course.seminar.start_time) for course in courses if hasattr(course, "seminar")]
+        lectures = [(color(course.name + " [L]", fore="30b24a"), course.lecture.day, course.lecture.start_time) for course in courses if hasattr(course, "lecture")]
+        seminars = [(color(course.name + " [S]", fore="1697b5"),  course.seminar.day, course.seminar.start_time) for course in courses if hasattr(course, "seminar")]
         classes = (lectures + seminars)
         classes = sorted(classes, key=lambda x:x[2])
         schedule = [""]
@@ -221,14 +221,10 @@ while(True):
                 schedule.append("{:>35s}   {}".format(hh_mm(start_time), name))
             schedule.append("")
 
-        os.system('mode con: cols=100 lines={}'.format(len(schedule)*2))
+        resize_window(100, len(schedule) + 10)
         print_logo()
-        questionary.select(
-            "{:^95s}".format("[ SCHEDULE ]"),
-            style   = custom_style,
-            choices = schedule
-        ).ask()        
-
+        for line in schedule: print(line)
+        questionary.select("", style=custom_style, choices=[""]).ask()
 
     elif choice == "Reload data":
         clear()
